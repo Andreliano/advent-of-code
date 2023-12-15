@@ -53,7 +53,6 @@ public class Solver {
                 }
 
             }
-            System.out.println(firstDigit * 10 + lastDigit);
             sum += (firstDigit * 10 + lastDigit);
         }
 
