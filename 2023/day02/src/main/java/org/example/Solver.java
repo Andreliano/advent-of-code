@@ -110,5 +110,38 @@ public class Solver {
         return sumOfAllPossibleGames;
     }
 
+    public int getSumOfPowersFromAllGames(Map<Integer, List<List<CubeInformation>>> allExtractedCubes) {
+        int maxRedCubesFromCurrentGame;
+        int maxGreenCubesFromCurrentGame;
+        int maxBlueCubesFromCurrentGame;
+        int powersSum = 0;
+        for (Map.Entry<Integer, List<List<CubeInformation>>> game : allExtractedCubes.entrySet()) {
+
+            maxRedCubesFromCurrentGame = -1;
+            maxGreenCubesFromCurrentGame = -1;
+            maxBlueCubesFromCurrentGame = -1;
+            for (List<CubeInformation> cubesInformation : game.getValue()) {
+
+                for (CubeInformation cubeInformation : cubesInformation) {
+
+                    if ("red".equals(cubeInformation.getColor()) && cubeInformation.getTotalCubes() > maxRedCubesFromCurrentGame) {
+                        maxRedCubesFromCurrentGame = cubeInformation.getTotalCubes();
+                    }
+                    else if ("green".equals(cubeInformation.getColor()) && cubeInformation.getTotalCubes() > maxGreenCubesFromCurrentGame) {
+                        maxGreenCubesFromCurrentGame = cubeInformation.getTotalCubes();
+                    }
+                    else if ("blue".equals(cubeInformation.getColor()) && cubeInformation.getTotalCubes() > maxBlueCubesFromCurrentGame) {
+                        maxBlueCubesFromCurrentGame = cubeInformation.getTotalCubes();
+                    }
+
+                }
+            }
+
+            powersSum = powersSum + (maxRedCubesFromCurrentGame * maxGreenCubesFromCurrentGame * maxBlueCubesFromCurrentGame);
+        }
+
+        return powersSum;
+    }
+
 
 }
