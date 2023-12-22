@@ -1,0 +1,114 @@
+package org.example;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
+
+public class Solver {
+
+    public Map<Integer, List<List<CubeInformation>>> getAllLinesFromFile(String filename) {
+        BufferedReader reader;
+        Map<Integer, List<List<CubeInformation>>> games = new HashMap<>();
+        List<List<CubeInformation>> allExtractedCubesPerGame;
+        List<CubeInformation> extractedCubesPerGame;
+
+        try {
+            reader = new BufferedReader(new FileReader(filename));
+            String line = reader.readLine();
+            String[] gameParts;
+            String[] gameIndex;
+            String[] cubesSubsets;
+            String[] cubes;
+            String[] cubeDetails;
+            CubeInformation cubeInformation;
+
+            while (line != null) {
+                gameParts = line.split(":");
+                gameIndex = gameParts[0].split(" ");
+                cubesSubsets = gameParts[1].split(";");
+
+                allExtractedCubesPerGame = new ArrayList<>();
+
+                for (String cubesSubset : cubesSubsets) {
+                    cubes = cubesSubset.split(",");
+                    extractedCubesPerGame = new ArrayList<>();
+                    for (String cube : cubes) {
+                        cubeDetails = cube.trim().split(" ");
+                        cubeInformation = new CubeInformation();
+                        cubeInformation.setTotalCubes(Integer.parseInt(cubeDetails[0]));
+                        cubeInformation.setColor(cubeDetails[1]);
+                        extractedCubesPerGame.add(cubeInformation);
+                    }
+                    allExtractedCubesPerGame.add(extractedCubesPerGame);
+                }
+
+                games.put(Integer.parseInt(gameIndex[1]), allExtractedCubesPerGame);
+
+                line = reader.readLine();
+            }
+
+            return games;
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public int getSumOfAllPossibleGamesIdsCorrespondingWithExistingCubes(int totalRedCubes,
+                                                                         int totalGreenCubes,
+                                                                         int totalBlueCubes,
+                                                                         Map<Integer, List<List<CubeInformation>>> allExtractedCubes) {
+
+        int totalRedCubesFromSubset;
+        int totalGreenCubesFromSubset;
+        int totalBlueCubesFromSubset;
+        boolean isImpossibleGame;
+        int sumOfAllPossibleGames = 0;
+
+        for (Map.Entry<Integer, List<List<CubeInformation>>> game : allExtractedCubes.entrySet()) {
+            isImpossibleGame = false;
+
+            for (List<CubeInformation> cubesInformation : game.getValue()) {
+                totalRedCubesFromSubset = 0;
+                totalGreenCubesFromSubset = 0;
+                totalBlueCubesFromSubset = 0;
+                for (CubeInformation cubeInformation : cubesInformation) {
+
+                    if ("red".equals(cubeInformation.getColor())) {
+                        totalRedCubesFromSubset += cubeInformation.getTotalCubes();
+                    }
+                    else if ("green".equals(cubeInformation.getColor())) {
+                        totalGreenCubesFromSubset += cubeInformation.getTotalCubes();
+                    }
+                    else if ("blue".equals(cubeInformation.getColor())) {
+                        totalBlueCubesFromSubset += cubeInformation.getTotalCubes();
+                    }
+
+                    if (totalRedCubesFromSubset > totalRedCubes || totalBlueCubesFromSubset > totalBlueCubes
+                            || totalGreenCubesFromSubset > totalGreenCubes) {
+                        isImpossibleGame = true;
+                        break;
+                    }
+
+                }
+
+                if (isImpossibleGame) {
+                    break;
+                }
+
+            }
+
+            if (!isImpossibleGame) {
+                sumOfAllPossibleGames += game.getKey();
+            }
+
+        }
+
+        return sumOfAllPossibleGames;
+    }
+
+
+}
