@@ -10,5 +10,6 @@ public class Main {
         System.out.println(solver.getSumOfAllPossibleGamesIdsCorrespondingWithExistingCubes(12,
                 13, 14,
                 games));
+        System.out.println(solver.getSumOfPowersFromAllGames(games));
     }
 }
