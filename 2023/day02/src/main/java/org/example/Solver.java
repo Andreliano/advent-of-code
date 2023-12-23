@@ -59,47 +59,23 @@ public class Solver {
                                                                          int totalBlueCubes,
                                                                          Map<Integer, List<List<CubeInformation>>> allExtractedCubes) {
 
-        int totalRedCubesFromSubset;
-        int totalGreenCubesFromSubset;
-        int totalBlueCubesFromSubset;
-        boolean isImpossibleGame;
+        boolean isImpossibleGameVar;
         int sumOfAllPossibleGames = 0;
 
         for (Map.Entry<Integer, List<List<CubeInformation>>> game : allExtractedCubes.entrySet()) {
-            isImpossibleGame = false;
+            isImpossibleGameVar = false;
 
             for (List<CubeInformation> cubesInformation : game.getValue()) {
-                totalRedCubesFromSubset = 0;
-                totalGreenCubesFromSubset = 0;
-                totalBlueCubesFromSubset = 0;
-                for (CubeInformation cubeInformation : cubesInformation) {
+                isImpossibleGameVar = isImpossibleGame(totalRedCubes, totalGreenCubes, totalBlueCubes, cubesInformation);
 
-                    if ("red".equals(cubeInformation.getColor())) {
-                        totalRedCubesFromSubset += cubeInformation.getTotalCubes();
-                    } else if ("green".equals(cubeInformation.getColor())) {
-                        totalGreenCubesFromSubset += cubeInformation.getTotalCubes();
-                    } else if ("blue".equals(cubeInformation.getColor())) {
-                        totalBlueCubesFromSubset += cubeInformation.getTotalCubes();
-                    }
-
-                    if (totalRedCubesFromSubset > totalRedCubes || totalBlueCubesFromSubset > totalBlueCubes
-                            || totalGreenCubesFromSubset > totalGreenCubes) {
-                        isImpossibleGame = true;
-                        break;
-                    }
-
-                }
-
-                if (isImpossibleGame) {
+                if (isImpossibleGameVar) {
                     break;
                 }
-
             }
 
-            if (!isImpossibleGame) {
+            if (!isImpossibleGameVar) {
                 sumOfAllPossibleGames += game.getKey();
             }
-
         }
 
         return sumOfAllPossibleGames;
@@ -134,6 +110,32 @@ public class Solver {
         }
 
         return powersSum;
+    }
+
+    private boolean isImpossibleGame(int totalRedCubes,
+                                     int totalGreenCubes,
+                                     int totalBlueCubes,
+                                     List<CubeInformation> cubesInformation) {
+        int totalRedCubesFromSubset = 0;
+        int totalGreenCubesFromSubset = 0;
+        int totalBlueCubesFromSubset = 0;
+
+        for (CubeInformation cubeInformation : cubesInformation) {
+            if ("red".equals(cubeInformation.getColor())) {
+                totalRedCubesFromSubset += cubeInformation.getTotalCubes();
+            } else if ("green".equals(cubeInformation.getColor())) {
+                totalGreenCubesFromSubset += cubeInformation.getTotalCubes();
+            } else if ("blue".equals(cubeInformation.getColor())) {
+                totalBlueCubesFromSubset += cubeInformation.getTotalCubes();
+            }
+
+            if (totalRedCubesFromSubset > totalRedCubes || totalBlueCubesFromSubset > totalBlueCubes
+                    || totalGreenCubesFromSubset > totalGreenCubes) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
