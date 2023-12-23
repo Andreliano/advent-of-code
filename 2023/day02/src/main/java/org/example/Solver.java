@@ -8,13 +8,11 @@ import java.util.*;
 public class Solver {
 
     public Map<Integer, List<List<CubeInformation>>> getAllLinesFromFile(String filename) {
-        BufferedReader reader;
         Map<Integer, List<List<CubeInformation>>> games = new HashMap<>();
         List<List<CubeInformation>> allExtractedCubesPerGame;
         List<CubeInformation> extractedCubesPerGame;
 
-        try {
-            reader = new BufferedReader(new FileReader(filename));
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line = reader.readLine();
             String[] gameParts;
             String[] gameIndex;
@@ -52,8 +50,7 @@ public class Solver {
 
         }
         catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            return new HashMap<>();
         }
     }
 
@@ -79,11 +76,9 @@ public class Solver {
 
                     if ("red".equals(cubeInformation.getColor())) {
                         totalRedCubesFromSubset += cubeInformation.getTotalCubes();
-                    }
-                    else if ("green".equals(cubeInformation.getColor())) {
+                    } else if ("green".equals(cubeInformation.getColor())) {
                         totalGreenCubesFromSubset += cubeInformation.getTotalCubes();
-                    }
-                    else if ("blue".equals(cubeInformation.getColor())) {
+                    } else if ("blue".equals(cubeInformation.getColor())) {
                         totalBlueCubesFromSubset += cubeInformation.getTotalCubes();
                     }
 
@@ -126,11 +121,9 @@ public class Solver {
 
                     if ("red".equals(cubeInformation.getColor()) && cubeInformation.getTotalCubes() > maxRedCubesFromCurrentGame) {
                         maxRedCubesFromCurrentGame = cubeInformation.getTotalCubes();
-                    }
-                    else if ("green".equals(cubeInformation.getColor()) && cubeInformation.getTotalCubes() > maxGreenCubesFromCurrentGame) {
+                    } else if ("green".equals(cubeInformation.getColor()) && cubeInformation.getTotalCubes() > maxGreenCubesFromCurrentGame) {
                         maxGreenCubesFromCurrentGame = cubeInformation.getTotalCubes();
-                    }
-                    else if ("blue".equals(cubeInformation.getColor()) && cubeInformation.getTotalCubes() > maxBlueCubesFromCurrentGame) {
+                    } else if ("blue".equals(cubeInformation.getColor()) && cubeInformation.getTotalCubes() > maxBlueCubesFromCurrentGame) {
                         maxBlueCubesFromCurrentGame = cubeInformation.getTotalCubes();
                     }
 

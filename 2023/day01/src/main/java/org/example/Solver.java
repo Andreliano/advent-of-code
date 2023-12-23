@@ -10,10 +10,8 @@ import java.util.regex.Pattern;
 public class Solver {
 
     public List<String> getAllLinesFromFile(String filename) {
-        BufferedReader reader;
         List<String> lines = new ArrayList<>();
-        try {
-            reader = new BufferedReader(new FileReader(filename));
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line = reader.readLine();
 
             while (line != null) {
@@ -22,10 +20,10 @@ public class Solver {
             }
 
             return lines;
+
         }
         catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -68,7 +66,8 @@ public class Solver {
         int firstDigit;
         int lastDigit;
         int length;
-        int i, j;
+        int i;
+        int j;
         int sum = 0;
         for (String line : lines) {
             List<DigitWithPosition> parts = getPartsFromLine(line);
@@ -97,13 +96,12 @@ public class Solver {
     private int getDigit(Map<String, Integer> digitsMap, int digit, int j, List<DigitWithPosition> parts) {
         boolean isIntegerDigit;
         boolean isStringDigit;
-        isIntegerDigit = parts.get(j).getDigit().matches("^[0-9]$");
+        isIntegerDigit = parts.get(j).getDigit().matches("^\\d$");
         isStringDigit = digitsMap.containsKey(parts.get(j).getDigit());
         if ((isIntegerDigit || isStringDigit) && digit == -1) {
             if (isIntegerDigit) {
                 digit = Integer.parseInt(parts.get(j).getDigit());
-            }
-            else {
+            } else {
                 digit = digitsMap.get(parts.get(j).getDigit());
             }
         }
