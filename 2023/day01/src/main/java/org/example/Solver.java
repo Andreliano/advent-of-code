@@ -29,30 +29,15 @@ public class Solver {
 
     public int getSumOfCalibrationValuesFirstPart(List<String> lines) {
         int sum = 0;
-        int length;
-        int i;
-        int j;
         int firstDigit;
         int lastDigit;
+        int[] digits;
         for (String line : lines) {
-            length = line.length();
             firstDigit = -1;
             lastDigit = -1;
-            for (i = 0; i < length; i++) {
-                j = length - (i + 1);
-                if (Character.isDigit(line.charAt(i)) && firstDigit == -1) {
-                    firstDigit = Integer.parseInt(String.valueOf(line.charAt(i)));
-                }
-                if (Character.isDigit(line.charAt(j)) && lastDigit == -1) {
-                    lastDigit = Integer.parseInt(String.valueOf(line.charAt(j)));
-                }
-
-                if (firstDigit != -1 && lastDigit != -1) {
-                    break;
-                }
-
-            }
-
+            digits = getFirstAndLastDigit(firstDigit, lastDigit, line);
+            firstDigit = digits[0];
+            lastDigit = digits[1];
             if (firstDigit > 0 && lastDigit > 0) {
                 sum += (firstDigit * 10 + lastDigit);
             }
@@ -93,7 +78,10 @@ public class Solver {
         return sum;
     }
 
-    private int getDigit(Map<String, Integer> digitsMap, int digit, int j, List<DigitWithPosition> parts) {
+    private int getDigit(Map<String, Integer> digitsMap,
+                         int digit,
+                         int j,
+                         List<DigitWithPosition> parts) {
         boolean isIntegerDigit;
         boolean isStringDigit;
         isIntegerDigit = parts.get(j).getDigit().matches("^\\d$");
@@ -157,6 +145,35 @@ public class Solver {
         digits.put("seven", 7);
         digits.put("eight", 8);
         digits.put("nine", 9);
+        return digits;
+    }
+
+    private int[] getFirstAndLastDigit(int firstDigit,
+                                      int lastDigit,
+                                      String line) {
+        int i;
+        int j;
+        int length = line.length();
+        for (i = 0; i < length; i++) {
+            j = length - (i + 1);
+            if (Character.isDigit(line.charAt(i)) && firstDigit == -1) {
+                firstDigit = Integer.parseInt(String.valueOf(line.charAt(i)));
+            }
+
+            if (Character.isDigit(line.charAt(j)) && lastDigit == -1) {
+                lastDigit = Integer.parseInt(String.valueOf(line.charAt(j)));
+            }
+
+            if (firstDigit != -1 && lastDigit != -1) {
+                break;
+            }
+
+        }
+
+        int[] digits = new int[2];
+        digits[0] = firstDigit;
+        digits[1] = lastDigit;
+
         return digits;
     }
 
