@@ -16,7 +16,7 @@ public class Solver {
         int i;
         int lineLength;
 
-        try(BufferedReader reader = new BufferedReader(new FileReader(filename))){
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line = reader.readLine();
             while (line != null) {
                 lineLength = line.length();
@@ -31,8 +31,7 @@ public class Solver {
             }
 
             return allCharacters;
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             return new ArrayList<>();
         }
     }
@@ -43,14 +42,6 @@ public class Solver {
         int totalLines = characters.size();
         int totalColumns;
         int builtNumber;
-        boolean isASymbolOfTheAboveLineAndTheSameColumn;
-        boolean isASymbolOfTheBelowLineAndTheSameColumn;
-        boolean isASymbolOfTheSameLineAndThePreviousColumn;
-        boolean isASymbolOfTheSameLineAndTheNextColumn;
-        boolean isASymbolOfTheAboveLineAndOnTheMainDiagonal;
-        boolean isASymbolOfTheBelowLineAndOnTheMainDiagonal;
-        boolean isASymbolOfTheAboveLineAndOnTheSecondaryDiagonal;
-        boolean isASymbolOfTheBelowLineAndOnTheSecondaryDiagonal;
         boolean symbolFound;
         int sumOfAllNumbersThatHaveAdjacentCharacters = 0;
 
@@ -61,25 +52,9 @@ public class Solver {
             for (j = 0; j < totalColumns; j++) {
                 if (Character.isDigit(characters.get(i).get(j))) {
                     builtNumber = builtNumber * 10 + (characters.get(i).get(j) - '0');
-                    if(!symbolFound) {
-                        isASymbolOfTheAboveLineAndTheSameColumn = i - 1 >= 0 && String.valueOf(characters.get(i - 1).get(j)).matches(SYMBOL_REGEX);
-                        isASymbolOfTheBelowLineAndTheSameColumn = i + 1 < totalLines && String.valueOf(characters.get(i + 1).get(j)).matches(SYMBOL_REGEX);
-                        isASymbolOfTheSameLineAndThePreviousColumn = j - 1 >= 0 && String.valueOf(characters.get(i).get(j - 1)).matches(SYMBOL_REGEX);
-                        isASymbolOfTheSameLineAndTheNextColumn = j + 1 < totalColumns && String.valueOf(characters.get(i).get(j + 1)).matches(SYMBOL_REGEX);
-                        isASymbolOfTheAboveLineAndOnTheMainDiagonal = i - 1 >= 0 && j - 1 >= 0 && String.valueOf(characters.get(i - 1).get(j - 1)).matches(SYMBOL_REGEX);
-                        isASymbolOfTheBelowLineAndOnTheMainDiagonal = i + 1 < totalLines && j + 1 < totalColumns && String.valueOf(characters.get(i + 1).get(j + 1)).matches(SYMBOL_REGEX);
-                        isASymbolOfTheAboveLineAndOnTheSecondaryDiagonal = i - 1 >= 0 && j + 1 < totalColumns && String.valueOf(characters.get(i - 1).get(j + 1)).matches(SYMBOL_REGEX);
-                        isASymbolOfTheBelowLineAndOnTheSecondaryDiagonal = i + 1 < totalLines && j - 1 >= 0 && String.valueOf(characters.get(i + 1).get(j - 1)).matches(SYMBOL_REGEX);
-                        if (isASymbolOfTheAboveLineAndTheSameColumn || isASymbolOfTheBelowLineAndTheSameColumn
-                                || isASymbolOfTheSameLineAndThePreviousColumn || isASymbolOfTheSameLineAndTheNextColumn
-                                || isASymbolOfTheAboveLineAndOnTheMainDiagonal || isASymbolOfTheBelowLineAndOnTheMainDiagonal
-                                || isASymbolOfTheAboveLineAndOnTheSecondaryDiagonal || isASymbolOfTheBelowLineAndOnTheSecondaryDiagonal) {
-                            symbolFound = true;
-                        }
-                    }
-                }
-                else {
-                    if(symbolFound) {
+                    symbolFound = existSymbolAdjacentWithCurrentDigit(i, j, totalLines, totalColumns, characters, symbolFound);
+                } else {
+                    if (symbolFound) {
                         sumOfAllNumbersThatHaveAdjacentCharacters += builtNumber;
                         symbolFound = false;
                     }
@@ -87,12 +62,45 @@ public class Solver {
                 }
             }
 
-            if(symbolFound) {
+            if (symbolFound) {
                 sumOfAllNumbersThatHaveAdjacentCharacters += builtNumber;
             }
         }
 
         return sumOfAllNumbersThatHaveAdjacentCharacters;
+    }
+
+    private boolean existSymbolAdjacentWithCurrentDigit(int i,
+                                                        int j,
+                                                        int totalLines,
+                                                        int totalColumns,
+                                                        List<List<Character>> characters,
+                                                        boolean symbolFound) {
+
+        if (!symbolFound) {
+            boolean isASymbolOfTheAboveLineAndTheSameColumn;
+            boolean isASymbolOfTheBelowLineAndTheSameColumn;
+            boolean isASymbolOfTheSameLineAndThePreviousColumn;
+            boolean isASymbolOfTheSameLineAndTheNextColumn;
+            boolean isASymbolOfTheAboveLineAndOnTheMainDiagonal;
+            boolean isASymbolOfTheBelowLineAndOnTheMainDiagonal;
+            boolean isASymbolOfTheAboveLineAndOnTheSecondaryDiagonal;
+            boolean isASymbolOfTheBelowLineAndOnTheSecondaryDiagonal;
+
+            isASymbolOfTheAboveLineAndTheSameColumn = i - 1 >= 0 && String.valueOf(characters.get(i - 1).get(j)).matches(SYMBOL_REGEX);
+            isASymbolOfTheBelowLineAndTheSameColumn = i + 1 < totalLines && String.valueOf(characters.get(i + 1).get(j)).matches(SYMBOL_REGEX);
+            isASymbolOfTheSameLineAndThePreviousColumn = j - 1 >= 0 && String.valueOf(characters.get(i).get(j - 1)).matches(SYMBOL_REGEX);
+            isASymbolOfTheSameLineAndTheNextColumn = j + 1 < totalColumns && String.valueOf(characters.get(i).get(j + 1)).matches(SYMBOL_REGEX);
+            isASymbolOfTheAboveLineAndOnTheMainDiagonal = i - 1 >= 0 && j - 1 >= 0 && String.valueOf(characters.get(i - 1).get(j - 1)).matches(SYMBOL_REGEX);
+            isASymbolOfTheBelowLineAndOnTheMainDiagonal = i + 1 < totalLines && j + 1 < totalColumns && String.valueOf(characters.get(i + 1).get(j + 1)).matches(SYMBOL_REGEX);
+            isASymbolOfTheAboveLineAndOnTheSecondaryDiagonal = i - 1 >= 0 && j + 1 < totalColumns && String.valueOf(characters.get(i - 1).get(j + 1)).matches(SYMBOL_REGEX);
+            isASymbolOfTheBelowLineAndOnTheSecondaryDiagonal = i + 1 < totalLines && j - 1 >= 0 && String.valueOf(characters.get(i + 1).get(j - 1)).matches(SYMBOL_REGEX);
+            return isASymbolOfTheAboveLineAndTheSameColumn || isASymbolOfTheBelowLineAndTheSameColumn
+                    || isASymbolOfTheSameLineAndThePreviousColumn || isASymbolOfTheSameLineAndTheNextColumn
+                    || isASymbolOfTheAboveLineAndOnTheMainDiagonal || isASymbolOfTheBelowLineAndOnTheMainDiagonal
+                    || isASymbolOfTheAboveLineAndOnTheSecondaryDiagonal || isASymbolOfTheBelowLineAndOnTheSecondaryDiagonal;
+        }
+        return true;
     }
 
 }
