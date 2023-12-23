@@ -10,10 +10,8 @@ import java.util.regex.Pattern;
 public class Solver {
 
     public List<String> getAllLinesFromFile(String filename) {
-        BufferedReader reader;
         List<String> lines = new ArrayList<>();
-        try {
-            reader = new BufferedReader(new FileReader(filename));
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line = reader.readLine();
 
             while (line != null) {
@@ -22,39 +20,24 @@ public class Solver {
             }
 
             return lines;
+
         }
         catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 
     public int getSumOfCalibrationValuesFirstPart(List<String> lines) {
         int sum = 0;
-        int length;
-        int i;
-        int j;
         int firstDigit;
         int lastDigit;
+        int[] digits;
         for (String line : lines) {
-            length = line.length();
             firstDigit = -1;
             lastDigit = -1;
-            for (i = 0; i < length; i++) {
-                j = length - (i + 1);
-                if (Character.isDigit(line.charAt(i)) && firstDigit == -1) {
-                    firstDigit = Integer.parseInt(String.valueOf(line.charAt(i)));
-                }
-                if (Character.isDigit(line.charAt(j)) && lastDigit == -1) {
-                    lastDigit = Integer.parseInt(String.valueOf(line.charAt(j)));
-                }
-
-                if (firstDigit != -1 && lastDigit != -1) {
-                    break;
-                }
-
-            }
-
+            digits = getFirstAndLastDigit(firstDigit, lastDigit, line);
+            firstDigit = digits[0];
+            lastDigit = digits[1];
             if (firstDigit > 0 && lastDigit > 0) {
                 sum += (firstDigit * 10 + lastDigit);
             }
@@ -68,7 +51,8 @@ public class Solver {
         int firstDigit;
         int lastDigit;
         int length;
-        int i, j;
+        int i;
+        int j;
         int sum = 0;
         for (String line : lines) {
             List<DigitWithPosition> parts = getPartsFromLine(line);
@@ -94,16 +78,18 @@ public class Solver {
         return sum;
     }
 
-    private int getDigit(Map<String, Integer> digitsMap, int digit, int j, List<DigitWithPosition> parts) {
+    private int getDigit(Map<String, Integer> digitsMap,
+                         int digit,
+                         int j,
+                         List<DigitWithPosition> parts) {
         boolean isIntegerDigit;
         boolean isStringDigit;
-        isIntegerDigit = parts.get(j).getDigit().matches("^[0-9]$");
+        isIntegerDigit = parts.get(j).getDigit().matches("^\\d$");
         isStringDigit = digitsMap.containsKey(parts.get(j).getDigit());
         if ((isIntegerDigit || isStringDigit) && digit == -1) {
             if (isIntegerDigit) {
                 digit = Integer.parseInt(parts.get(j).getDigit());
-            }
-            else {
+            } else {
                 digit = digitsMap.get(parts.get(j).getDigit());
             }
         }
@@ -159,6 +145,35 @@ public class Solver {
         digits.put("seven", 7);
         digits.put("eight", 8);
         digits.put("nine", 9);
+        return digits;
+    }
+
+    private int[] getFirstAndLastDigit(int firstDigit,
+                                      int lastDigit,
+                                      String line) {
+        int i;
+        int j;
+        int length = line.length();
+        for (i = 0; i < length; i++) {
+            j = length - (i + 1);
+            if (Character.isDigit(line.charAt(i)) && firstDigit == -1) {
+                firstDigit = Integer.parseInt(String.valueOf(line.charAt(i)));
+            }
+
+            if (Character.isDigit(line.charAt(j)) && lastDigit == -1) {
+                lastDigit = Integer.parseInt(String.valueOf(line.charAt(j)));
+            }
+
+            if (firstDigit != -1 && lastDigit != -1) {
+                break;
+            }
+
+        }
+
+        int[] digits = new int[2];
+        digits[0] = firstDigit;
+        digits[1] = lastDigit;
+
         return digits;
     }
 
