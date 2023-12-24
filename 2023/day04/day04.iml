@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_18">
+    <output url="file://$MODULE_DIR$/2023/day04/target/classes" />
+    <output-test url="file://$MODULE_DIR$/2023/day04/target/test-classes" />
+    <content url="file://$MODULE_DIR$/2023/day04">
+      <sourceFolder url="file://$MODULE_DIR$/2023/day04/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/2023/day04/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/2023/day04/src/test/java" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/2023/day04/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+  <component name="SonarLintModuleSettings">
+    <option name="uniqueId" value="322990e4-411e-48cf-921d-0c21bfaab46c" />
+  </component>
+</module>

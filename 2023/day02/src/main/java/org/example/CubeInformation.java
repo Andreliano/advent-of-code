@@ -24,7 +24,7 @@ public class CubeInformation {
 
     @Override
     public String toString() {
-        return "CubeInformation{" +
+        return "org.example.CubeInformation{" +
                 "totalCubes=" + totalCubes +
                 ", color='" + color + '\'' +
                 '}';
