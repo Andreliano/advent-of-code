@@ -73,3 +73,13 @@ B
 02023/day04/src/main/java/org/example/Solver.java,2\e\2e0d7e27a5d5eb6f24ff20084d7a4541ef8b871f
 ^
 .2023/day04/src/main/java/org/example/Main.java,5\d\5ddc19d665b63644249a2b71e5bd3da1cfc16a1c
+>
+.gitattributes,2\4\24139dae656713ba861751fb2c2ac38839349a7a
+B
+2023/day05/pom.xml,5\d\5deb2519d54eaf695417003bc23bd2e55c69cd0c
+`
+02023/day05/src/main/java/org/example/Solver.java,5\1\5135ec99a532d7b2e0bc6870a2f7ba162875c441
+^
+.2023/day05/src/main/java/org/example/Main.java,8\3\836d0fa9023e292956bf4dcddbc5854915045c0f
+_
+/2023/day05/src/main/java/org/example/Range.java,4\0\40356c13e6a3c4dfd2f67036847398067b8c68a3
