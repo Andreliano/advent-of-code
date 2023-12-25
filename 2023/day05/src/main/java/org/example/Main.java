@@ -5,5 +5,6 @@ public class Main {
         Solver solver = new Solver();
         solver.readAllInformationFromFile("2023/day05/src/main/resources/input");
         System.out.println(solver.getMinLocationValue());
+        System.out.println(solver.getLowestLocationFromRangesOfSeeds());
     }
 }

@@ -9,7 +9,9 @@ import java.util.Optional;
 
 public class Solver {
 
-    private final List<Long> seeds = new ArrayList<>();
+    private List<Long> seeds = new ArrayList<>();
+
+    private final List<Long> seedsCopy = new ArrayList<>();
 
     private final List<Range> seedToSoil = new ArrayList<>();
 
@@ -88,6 +90,39 @@ public class Solver {
         return -1;
     }
 
+    public long getLowestLocationFromRangesOfSeeds() {
+        List<Long> resultSeeds = new ArrayList<>();
+        long min = -1;
+        long minTemp;
+        int i;
+        long j;
+        int seedsLength = seeds.size();
+        long start;
+        long end;
+        for (i = 0; i < seedsLength - 1; i++) {
+            start = seedsCopy.get(i);
+            end = start + seedsCopy.get(i + 1) - 1;
+            for (j = start; j < end; j++) {
+                resultSeeds.add(j);
+                seeds = new ArrayList<>(resultSeeds);
+                if (i == 0 && j == start) {
+                    min = getMinLocationValue();
+                }
+                else {
+                    minTemp = getMinLocationValue();
+                    if (minTemp < min) {
+                        min = minTemp;
+                    }
+                }
+                resultSeeds.remove(j);
+            }
+            i++;
+        }
+
+        return min;
+
+    }
+
     private void addRangeInListByReadValue(boolean readSeedToSoilInformationLines,
                                            boolean readSoilToFertilizerInformationLines,
                                            boolean readFertilizerToWaterInformationLines,
@@ -157,6 +192,7 @@ public class Solver {
             seedsNumbers = currentLine[1].split(" ");
             for (String seedNumber : seedsNumbers) {
                 if (!seedNumber.isEmpty()) {
+                    seedsCopy.add(Long.parseLong(seedNumber));
                     seeds.add(Long.parseLong(seedNumber));
                 }
             }
